@@ -1,0 +1,47 @@
+- hosts: maestros
+  become: yes
+
+  pre_tasks:
+    - name: update packages
+      apt:
+        update_cache: yes
+        upgrade: safe
+
+    - name: install apt-transport-https
+      apt:
+        name: apt-transport-https
+        state: latest
+
+    - name: configure wireless
+      template:
+        src: wpa_supplicant.conf.j2
+        dest: /etc/wpa_supplicant/wpa_supplicant.conf
+        mode: '0600'
+
+  roles:
+    - role: nginx
+      nginx_sites:
+        default:
+          - listen 80
+          - server_name _
+          - location / { return 302 http://maestro:6680/moped/; }
+          - access_log off
+          - error_log off
+
+    - role: mopidy
+      mopidy_extensions:
+        - mopidy-somafm
+      mopidy_external_extensions:
+        - mopidy-gmusic
+        - Mopidy-Moped
+      mopidy_settings:
+        - section: gmusic
+          option: username
+          value: '{{ gmusic_username }}'
+        - section: gmusic
+          option: password
+          value: '{{ gmusic_password }}'
+        - section: http
+          option: hostname
+          value: '0.0.0.0'
+
