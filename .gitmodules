@@ -4,3 +4,6 @@
 [submodule "roles/mopidy"]
 	path = roles/mopidy
 	url = https://github.com/bobzoller/ansible-role-mopidy.git
+[submodule "roles/shairport-sync"]
+	path = roles/shairport-sync
+	url = https://github.com/bobzoller/ansible-role-shairport-sync.git

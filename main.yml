@@ -45,3 +45,11 @@
           option: hostname
           value: '0.0.0.0'
 
+    - role: shairport-sync
+      conf: |
+        general = {
+          name = "Maestro";
+          volume_range_db = 30;
+          drift = 352;
+        };
+
